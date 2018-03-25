@@ -12,7 +12,7 @@ export default class LoginForm extends Component {
 
     componentDidMount() {
         firebase.auth().onAuthStateChanged((user) => {
-            if(user != null) {
+            if (user != null) {
                 console.log(user);
             }
         });
@@ -20,21 +20,21 @@ export default class LoginForm extends Component {
 
     signUpUser = (email, password) => {
         try {
-            if(this.state.password.length < 6) {
+            if (this.state.password.length < 6) {
                 alert('please enter at least 6 characters');
             }
-            
+
             firebase.auth().createUserWithEmailAndPassword(email, password);
-        } catch(error) {
+        } catch (error) {
             console.log(error.toString());
         }
     };
 
     loginUser = async (email, password) => {
         try {
-            const user = await firebase.auth().signInWithEmailAndPassword(email,password);
+            const user = await firebase.auth().signInWithEmailAndPassword(email, password);
             console.log(user);
-        } catch(error) {
+        } catch (error) {
 
         }
     }
@@ -51,7 +51,7 @@ export default class LoginForm extends Component {
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    onChangeText={(email) => this.setState({email})}
+                    onChangeText={(email) => this.setState({ email })}
                     style={styles.input}
                 />
                 <TextInput
@@ -60,13 +60,13 @@ export default class LoginForm extends Component {
                     returnKeyType="go"
                     secureTextEntry={true}
                     style={styles.input}
-                    onChangeText={(password) => this.setState({password})}
+                    onChangeText={(password) => this.setState({ password })}
                     ref={(input) => this.passwordInput = input}
                 />
 
                 <View >
                     <TouchableOpacity style={styles.buttonContainer}>
-                        <Text style={styles.buttonText} 
+                        <Text style={styles.buttonText}
                             onPress={() => this.loginUser(this.state.email, this.state.password)}
                         >Login</Text>
                     </TouchableOpacity>
@@ -84,7 +84,7 @@ export default class LoginForm extends Component {
 const styles = StyleSheet.create({
 
     container: {
-        padding:20,
+        padding: 20,
     },
 
     input: {
