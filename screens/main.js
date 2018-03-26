@@ -4,6 +4,8 @@ import { TabNavigator } from 'react-navigation';
 
 import { RecipeTab } from './recipe';
 import { HomeTab } from './home';
+import { LoginScreen } from './login';
+import { AddRecipeScreen } from './addRecipe';
 
 export class MainScreen extends Component {
 
@@ -24,9 +26,18 @@ const AppTabNavigator = TabNavigator({
         screen: HomeTab,
     },
 
+    Login: {
+        screen: LoginScreen,
+    },
+
     Recipe: {
         screen: RecipeTab
+    },
+
+    AddRecipe: {
+        screen: AddRecipeScreen
     }
+    
 }, {
     animationEnabled: true,
     tabBarPosition: 'bottom',
