@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, StatusBar } from 'react-native';
 
-import * as firebase from 'firebase';
+import firebase from './../../firebase';
 
 export default class LoginForm extends Component {
 
@@ -11,11 +11,18 @@ export default class LoginForm extends Component {
     };
 
     componentDidMount() {
-        firebase.auth().onAuthStateChanged((user) => {
+        this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
             if (user != null) {
-                console.log(user);
+                console.log('navigate to');
+                this.props.navigate('Recipe');
             }
         });
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
     }
 
     signUpUser = (email, password) => {
@@ -35,7 +42,7 @@ export default class LoginForm extends Component {
             const user = await firebase.auth().signInWithEmailAndPassword(email, password);
             console.log(user);
         } catch (error) {
-
+            console.log(error.toString());
         }
     }
 
