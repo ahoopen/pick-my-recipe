@@ -11,7 +11,8 @@ export class Tile extends Component {
         Animated.spring(this.animatedValue, {
             toValue: .9,
             duration: 300,
-            easing: Easing.easeOutBack
+            easing: Easing.easeOutBack,
+            useNativeDriver: true
         }).start();
     };
 
@@ -19,8 +20,11 @@ export class Tile extends Component {
         Animated.spring(this.animatedValue, {
             toValue: 1,
             friction: 3,
-            tension: 40
+            tension: 40,
+            useNativeDriver: true
         }).start();
+
+        if(this.props.onTilePress) this.props.onTilePress();
     };
 
     render() {
@@ -29,6 +33,7 @@ export class Tile extends Component {
                 scale: this.animatedValue
             }]
         };
+
 
         return (
             <TouchableWithoutFeedback
