@@ -53,13 +53,6 @@ export class HomeTab extends Component {
     }
 
     onItemPress = () => {
-        console.log('item press', height);
-
-        // this.state.openProgress.interpolate({
-        //     inputRange: [0.005, 0.01],
-        //     outputRange: [1, 0]
-        // });
-
         this.setState({
             recipe: 1,
             isAnimating: true
@@ -69,7 +62,7 @@ export class HomeTab extends Component {
                 duration: 300,
                 useNativeDriver: true
             }).start(() => {
-                console.log('done animating..');
+                this.setState({ isAnimating: false });
             });
         });
     }
@@ -77,14 +70,14 @@ export class HomeTab extends Component {
     closeDetail = () => {
         this.setState({
             recipe: null,
-            isAnimating: false
+            isAnimating: true
         }, () => {
             Animated.timing(this.state.openProgress, {
                 toValue: 0,
                 duration: 300,
                 useNativeDriver: true
             }).start(() => {
-                console.log('done animating..');
+                this.setState({ isAnimating: false });
             });
         });
     }
@@ -94,15 +87,21 @@ export class HomeTab extends Component {
 
         return (
             <ScrollView style={styles.container}>
-                <View
+                <Animated.View
                     style={{
                         flex: 2,
-                        marginTop: Platform.OS === 'ios' ? 34 : 0
+                        marginTop: Platform.OS === 'ios' ? 34 : 0,
+                        opacity: this.state.openProgress.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [1, 0]
+                        })
                     }}
                 >
                     <Animatable.View
                         animation="fadeInUp"
-                        style={{ marginBottom: 20 }}
+                        style={{
+                            marginBottom: 20
+                        }}
                     >
                         <Text style={styles.header}>Recipes</Text>
                         <FlatList
@@ -136,7 +135,16 @@ export class HomeTab extends Component {
                             }}
                         />
                     </Animatable.View>
-                </View>
+
+                    <View
+                        style={{
+                            backgroundColor: 'yellow',
+                            height: 500,
+                        }}
+                    >
+                    </View>
+
+                </Animated.View>
 
                 {/* <View
                     style={{
@@ -174,24 +182,12 @@ export class HomeTab extends Component {
 
                 </View> */}
 
-
-
-                <View
-                    style={{
-                        backgroundColor: 'yellow',
-                        height: 500,
-                    }}
-                >
-                </View>
-
                 <Detail
                     recipe={this.state.recipe}
                     onClose={this.closeDetail}
                     isAnimating={this.isAnimating}
                     openProgress={this.state.openProgress}
                 />
-
-
             </ScrollView>
         )
     }
