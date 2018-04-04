@@ -23,8 +23,6 @@ export class Tile extends Component {
             tension: 40,
             useNativeDriver: true
         }).start();
-
-        if(this.props.onTilePress) this.props.onTilePress();
     };
 
     render() {
@@ -34,11 +32,11 @@ export class Tile extends Component {
             }]
         };
 
-
         return (
             <TouchableWithoutFeedback
                 onPressIn={this.handlePressIn}
                 onPressOut={this.handlePressOut}
+                onPress={() => this.props.onTilePress()}
             >
                 <Animated.View
                     style={[{
