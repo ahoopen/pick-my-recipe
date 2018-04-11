@@ -9,8 +9,8 @@ export class Tile extends Component {
 
     handlePressIn = () => {
         Animated.spring(this.animatedValue, {
-            toValue: .9,
-            duration: 300,
+            toValue: .95,
+            duration: 200,
             easing: Easing.easeOutBack,
             useNativeDriver: true
         }).start();
@@ -39,12 +39,7 @@ export class Tile extends Component {
                 onPress={() => this.props.onTilePress()}
             >
                 <Animated.View
-                    style={[{
-                        flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }, animatedStyle]}
+                    style={animatedStyle}
                 >
                     {this.props.children}
                 </Animated.View>

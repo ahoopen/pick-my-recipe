@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Text, Animated, TouchableOpacity } from 'react-native';
-import { Card, CardItem, Thumbnail, Body, Left, Right, Button } from 'native-base';
+import { StyleSheet, View, Platform, Dimensions, Image, Text, Animated, TouchableOpacity } from 'react-native';
 
+import { human, iOSColors } from 'react-native-typography';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+const { height, width } = Dimensions.get('window');
+
 
 export default class CardComponent extends Component {
 
@@ -13,61 +16,71 @@ export default class CardComponent extends Component {
 
         console.log(recipeId);
 
+        // onPress={() => navigate('Recipe', {
+        //     recipeId
+        // })}
+
         return (
             <View
-                paddingBottom={20}
-                style={{
-                    overflow: 'hidden'
-                }}
+                style={styles.card}
             >
-                <TouchableOpacity
-                    // onPress={() => navigate('Recipe', {
-                    //     recipeId
-                    // })}
-                >
-                    {/* <Animated.Image
+                <View style={{
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                    overflow: 'hidden',
+                }}>
+                    <Image
                         source={{
                             uri: 'https://farm5.staticflickr.com/4374/36390435575_7e51b26c00_z.jpg',
                             cache: 'force-cache'
                         }}
-                        style={{
-                            height: 150
-                        }}
-                    /> */}
-                    <Text>Dit is een recept</Text>
-                    {/* <Left>
-                        <Text>{title}</Text>
-                    </Left>
-                    <Body>
-                        <Text>test</Text>
-                        <Icon name="ios-people" size={30} />
-
-                        <Text note>Ma 24, 2018</Text>
-                    </Body> */}
-                </TouchableOpacity>
-            </View>
+                        style={[{
+                            height: 150,
+                            resizeMode: "cover"
+                        }]}
+                    />
+                </View>
+                <View style={{ padding: 12, }}>
+                    <Text style={styles.album}>Time of Mirrors</Text>
+                    <Text style={styles.author}>Chaotic Hook</Text>
+                </View>
+            </View >
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
 
-        shadowRadius: 4,
-        shadowOffset: {
-            width: 10,
-            height: 10
-        },
-        shadowColor: 'rgba(0,0,0, .15)',
-        shadowOpacity: 1,
+    card: {
+        width: width - 100,
+        height: 220,
+        marginTop: 24,
+        marginHorizontal: 16,
+        backgroundColor: iOSColors.white,
+        borderRadius: 14,
+        ...Platform.select({
+            android: { elevation: 16 },
+            ios: {
+                shadowColor: "black",
+                shadowOffset: {
+                    width: 0,
+                    height: 16
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 16
+            }
+        })
+    },
 
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: 'rgba(0,0,0,.04)',
-        backgroundColor: '#ffffff',
+    album: {
+        ...human.footnoteObject,
+        fontSize: 16,
+        marginTop: 5
+    },
 
-        height: 200,
-        width: 200,
+    author: {
+        ...human.footnoteObject,
+        fontSize: 16,
+        color: iOSColors.gray
     },
 });

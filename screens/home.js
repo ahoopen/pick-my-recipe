@@ -10,21 +10,23 @@ import {
     ScrollView,
     Dimensions
 } from 'react-native';
-import { Icon, Container, Content } from 'native-base'
-import * as Animatable from 'react-native-animatable'
+import { Icon, Container, Content } from 'native-base';
+import * as Animatable from 'react-native-animatable';
+import PropTypes from 'prop-types';
 import Card from '../components/card/card';
 
 import { Tile } from '../components/tile/tile';
 
 // detail screen
 import { Detail } from './detail';
+import { Transition } from './transition';
 
 import firebase, { database } from '../firebase';
 import map from 'lodash/map';
 
-import { systemWeights } from 'react-native-typography'
+import { iOSUIKit, iOSColors, systemWeights } from 'react-native-typography'
 
-const { height } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 export class HomeTab extends Component {
 
@@ -55,7 +57,7 @@ export class HomeTab extends Component {
     onItemPress = () => {
         this.setState({
             recipe: 1,
-            isAnimating: true
+            isAnimating: true,
         }, () => {
             Animated.timing(this.state.openProgress, {
                 toValue: 1,
@@ -86,7 +88,11 @@ export class HomeTab extends Component {
         const { recipes, currentUser } = this.state;
 
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView contentContainerStyle={{
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "stretch"
+            }} style={styles.container}>
                 <Animated.View
                     style={{
                         flex: 2,
@@ -99,13 +105,13 @@ export class HomeTab extends Component {
                 >
                     <Animatable.View
                         animation="fadeInUp"
-                        style={{
-                            marginBottom: 20
-                        }}
+                        // style={{
+                        //     paddingBottom: 20
+                        // }}
                     >
                         <Text style={styles.header}>Recipes</Text>
                         <FlatList
-                            style={{ margin: 10 }}
+                            style={{padding: 20 }}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
                             data={map(recipes, (recipe, key) => {
@@ -120,28 +126,27 @@ export class HomeTab extends Component {
                                     <Tile
                                         onTilePress={this.onItemPress}
                                     >
-                                        <View
-                                            style={styles.card}
-                                        >
-                                            <Card
-                                                recipe={item.recipe}
-                                                recipeId={item.key}
-                                                navigation={this.props.navigation}
-                                            />
-
-                                        </View>
+                                        <Card
+                                            recipe={item.recipe}
+                                            recipeId={item.key}
+                                            navigation={this.props.navigation}
+                                        />
                                     </Tile>
                                 );
                             }}
                         />
                     </Animatable.View>
 
-                    <View
-                        style={{
-                            backgroundColor: 'yellow',
-                            height: 500,
-                        }}
-                    >
+                    <View style={styles.recentlyPlayed}>
+                        <Text
+                            style={{
+                                marginLeft: 20,
+                                // paddingTop: 40,
+                                paddingBottom: 40,
+                                fontSize: 34,
+                                ...systemWeights.bold,
+                            }}
+                        >Your Favorites</Text>
                     </View>
 
                 </Animated.View>
@@ -197,7 +202,7 @@ export class HomeTab extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F2F2F2',
+        // backgroundColor: '#F2F2F2',
     },
 
     header: {
@@ -206,19 +211,26 @@ const styles = StyleSheet.create({
         ...systemWeights.bold,
     },
 
-    card: {
-        width: 200,
-        height: 175,
-        borderRadius: 16,
-        margin: 10,
+    recentlyPlayed: {
+        flex: 2,
+        height: 500,
+        paddingTop: 16,
+        backgroundColor: iOSColors.white
+    },
 
-        shadowRadius: 2,
-        // shadowOffset: {
-        //     width: 6,
-        //     height: 6
-        // },
-        backgroundColor: '#fff',
-        shadowColor: 'rgba(0,0,0, .07)',
-        shadowOpacity: .7,
-    }
+    // card: {
+    //     // width: width - 100,
+    //     // height: 220,
+    //     // borderRadius: 14,
+    //     // margin: 10,
+
+    //     // shadowRadius: 10,
+    //     // shadowOffset: {
+    //     //     width: 0,
+    //     //     height: 0
+    //     // },
+    //     // backgroundColor: '#fff',
+    //     // shadowColor: 'rgba(0,0,0, .15)',
+    //     // shadowOpacity: .9,
+    // }
 });
